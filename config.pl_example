@@ -1,0 +1,27 @@
+# URL and credentials to access Confluence.
+# Be sure that Remote API is enabled there
+
+our %confluence = (
+	url => 'https://mycompany.atlassian.net/wiki',
+	login => 'MYLOGIN',
+	password => 'MYPASS',
+	space => 'MYSPACE',
+	rootPage => 'XWiki'
+);
+
+our $fromWiki = 'xwiki'; # dokuwiki, xwiki
+
+# If you choose to migrate dokuwiki then edit these parameters
+our %dokuwiki = (
+   pages => '/tmp/dokuwiki/data/pages/',
+   media => '/tmp/dokuwiki/data/media/',
+   startPage => 'start' # the name of your dokuwiki start page
+);
+
+
+# If you choose to migrate xwiki then edit these parameters
+# export backup from xwiki from url /xwiki/bin/export/Space/Page?format=xar and unarchive it
+# then remove all unneeded folders from the unarchived data
+our %xwiki = (
+   pages => '/tmp/xwiki/backup/'
+);
