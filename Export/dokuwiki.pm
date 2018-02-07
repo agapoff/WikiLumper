@@ -12,7 +12,7 @@ sub export {
 	my $data;
 	my $files = readDir($conf->{pages}, $debug);
 	foreach (@{$files}) {
-		open (my $fh, '<', $conf->{pages}.'/'.$_.'.txt') || die;
+		open (my $fh, '<:utf8', $conf->{pages}.'/'.$_.'.txt') || die;
 		{
 			local $/;
 			$data->{$_}->{body} = <$fh>;
