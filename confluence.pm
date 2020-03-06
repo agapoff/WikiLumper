@@ -19,6 +19,7 @@ sub new {
 
 	$ua = LWP::UserAgent->new;
 	$ua->timeout(60);
+print $arg{Url}.'/rest/api/latest/content?spaceKey='.$arg{Space}.'&expand=ancestors'."\n"."Authorization => 'Basic '.$basic\n";
 	my $response = $ua->get($arg{Url}.'/rest/api/latest/content?spaceKey='.$arg{Space}.'&expand=ancestors', Authorization => 'Basic '.$basic);
 	if ($response->is_success) {
 		print "Logged to Confluence successfully\n" if ($arg{Debug});
