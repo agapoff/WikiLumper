@@ -1,6 +1,6 @@
 package confluence;
 
-use strict;
+#use strict;
 use warnings;
 use Data::Dumper;
 use LWP::UserAgent;
@@ -19,6 +19,10 @@ sub new {
 
 	$ua = LWP::UserAgent->new;
 	$ua->timeout(60);
+	$ua->ssl_opts(
+  	SSL_verify_mode => IO::Socket::SSL::SSL_VERIFY_NONE, 
+  	verify_hostname => 0
+	);
 print $arg{Url}.'/rest/api/latest/content?spaceKey='.$arg{Space}.'&expand=ancestors'."\n"."Authorization => 'Basic '.$basic\n";
 	my $response = $ua->get($arg{Url}.'/rest/api/latest/content?spaceKey='.$arg{Space}.'&expand=ancestors', Authorization => 'Basic '.$basic);
 	if ($response->is_success) {
