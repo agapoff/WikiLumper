@@ -14,17 +14,22 @@ sub new {
 	my $class = shift;
 	my %arg = @_;
 	return "No URL defined" unless $arg{Url};
-	my $basic =  encode_base64($arg{Login}.":".$arg{Password});
+	my $basic;
+	if ( $arg{Login} && $arg{Login} ne '' && $arg{Password} && $arg{Password} ne '') {
+		$basic = 'Basic '.encode_base64($arg{Login}.":".$arg{Password});
+	} elsif ( $arg{Token} && $arg{Token} ne '' ) {
+		$basic = 'Bearer '.$arg{Token};
+	}
 	my $self;
-
+	print "Token".$arg{Token}.",Login".$arg{Login}."\n";
 	$ua = LWP::UserAgent->new;
 	$ua->timeout(60);
 	$ua->ssl_opts(
-  	SSL_verify_mode => IO::Socket::SSL::SSL_VERIFY_NONE, 
+  	SSL_verify_mode => 0, #IO::Socket::SSL::SSL_VERIFY_NONE, 
   	verify_hostname => 0
 	);
-print $arg{Url}.'/rest/api/latest/content?spaceKey='.$arg{Space}.'&expand=ancestors'."\n"."Authorization => 'Basic '.$basic\n";
-	my $response = $ua->get($arg{Url}.'/rest/api/latest/content?spaceKey='.$arg{Space}.'&expand=ancestors', Authorization => 'Basic '.$basic);
+	print $arg{Url}.'/rest/api/latest/content?spaceKey='.$arg{Space}.'&expand=ancestors'."\n"."Authorization => ".$basic."\n";
+	my $response = $ua->get($arg{Url}.'/rest/api/latest/content?spaceKey='.$arg{Space}.'&expand=ancestors', Authorization => $basic);
 	if ($response->is_success) {
 		print "Logged to Confluence successfully\n" if ($arg{Debug});
 		$self = { basic => $basic, url => $arg{Url}, space => $arg{Space}, debug => $arg{Debug} };
@@ -60,9 +65,9 @@ sub createContent {
 	}
 	my $content = encode_json \%data;
 	print $content."\n" if ($self->{debug});
-	my $basic = ($arg{Login} && $arg{Password}) ? encode_base64($arg{Login}.":".$arg{Password}) : $self->{basic};
+	my $basic = ($arg{Login} && $arg{Password}) ? 'Basic '.encode_base64($arg{Login}.":".$arg{Password}) : ($arg{Token}) ? 'Bearer '.$arg{Token}:$self->{basic};
 
-	my $response = $ua->post($self->{url}.'/rest/api/content', Authorization => 'Basic '.$basic, 'Content-Type' => 'application/json; charset=UTF-8', 'Content' => $content);
+	my $response = $ua->post($self->{url}.'/rest/api/content', Authorization => $basic, 'Content-Type' => 'application/json; charset=UTF-8', 'Content' => $content);
 	if ($response->is_success) {
 		print $response->status_line."\n" if ($self->{debug});
 		print $response->decoded_content."\n" if ($self->{debug});
