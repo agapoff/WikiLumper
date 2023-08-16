@@ -6,6 +6,7 @@ our %confluence = (
 	login => 'MYLOGIN',
 	password => 'MYPASS',
 	space => 'MYSPACE',
+        token => 'MYTOKEN',
 	rootPage => 'XWiki'
 );
 
