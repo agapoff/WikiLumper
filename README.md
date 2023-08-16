@@ -38,6 +38,7 @@ WikiLumper can not:
 
 
 ## Needed Perl modules
+  You can install these by running cpanm < dependencies.txt
   * LWP::UserAgent
   * JSON
   * MIME::Base64
