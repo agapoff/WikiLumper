@@ -35,6 +35,7 @@ my $cfl = confluence->new(
     Url      => $confluence{url},
     Login    => $confluence{login},
     Password => $confluence{password},
+    Token    => $confluence{token},
     Space    => $confluence{space},
     Debug    => $debug,
 );
