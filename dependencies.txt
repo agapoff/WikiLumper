@@ -1,0 +1,7 @@
+LWP::UserAgent
+JSON
+MIME::Base64
+Data::Dumper
+Getopt::Long
+XML::Parser
+LWP::Protocol::https
