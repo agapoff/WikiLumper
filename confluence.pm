@@ -90,7 +90,7 @@ sub addAttachments {
 			print "The file size exceeds the maximum permitted size of 10485760 bytes";
 			return 1;
 		}
-		my $response = $ua->post($self->{url}.'/rest/api/latest/content/'.$arg{Id}.'/child/attachment', Authorization => 'Basic '.$self->{basic}, 'Content_Type' => 'multipart/form-data', Content => [file => [$file]], 'X-Atlassian-Token' => 'no-check');
+		my $response = $ua->post($self->{url}.'/rest/api/latest/content/'.$arg{Id}.'/child/attachment', Authorization => $self->{basic}, 'Content-Type' => 'multipart/form-data', Content => [file => [$file]], 'X-Atlassian-Token' => 'no-check');
 		if ($response->is_success) {
 			print $response->status_line."\n";
 			print $response->decoded_content;
